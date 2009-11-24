@@ -69,7 +69,7 @@ public class Tree {
         buildGraph(graph, root);
         graph.addln(graph.end_graph());
 
-        File out = new File("out.gif");
+        File out = new File("out.svg");
         graph.writeGraphToFile( graph.getGraph( graph.getDotSource() ), out );
         System.out.println( graph.getDotSource() );
         
