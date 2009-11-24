@@ -3,7 +3,7 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
@@ -13,10 +13,27 @@
 
 package info.bpace.bonsai;
 
+import java.util.Random;
+
 /**
  *
  * @author Blaine Pace <blainepace at gmail.com>
  */
-public class AppTest {
+public class Main {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        Tree myTree = new Tree();
+
+        Random rand = new Random();
+
+        for(Integer i = 0; i < 1000; i++) {
+            myTree.insert(rand.nextInt() % 1000);
+        }
+
+        myTree.graph();
+    }
 
 }
