@@ -25,7 +25,10 @@ import javax.swing.JPanel;
 
 import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
 import org.apache.batik.util.XMLResourceDescriptor;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -71,7 +74,7 @@ public class ZVTMView {
         JFrame tempFrame = new JFrame();
 
         demoView = vsm.addFrameView(cameras, "mainSpace", 100, 100, true, true, viewType, tempPanel, tempFrame);
-        demoView.setBackgroundColor(Color.GRAY);
+        demoView.setBackgroundColor(Color.WHITE);
         demoView.setSize(400, 400);
         demoView.setResizable(true);
 
@@ -82,15 +85,34 @@ public class ZVTMView {
         String parser = XMLResourceDescriptor.getXMLParserClassName();
         SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
 
+        FileInputStream fileInput;
+        Document doc;
+        String width;
+        String height;
+
         try {
-            FileInputStream fileInput = new FileInputStream(svg);
-            Document doc = f.createSVGDocument("out.svg", fileInput);
+            fileInput = new FileInputStream(svg);
+            doc = f.createSVGDocument( "out.svg", fileInput );
             SVGReader.load(doc, vs, false, "out.svg");
             vsm.repaintNow(demoView);
-        } catch(Exception e) {
-            System.out.println("Exception!");
-        }
 
+            // pull svg width and height from dom
+            NodeList nodelist = doc.getElementsByTagName("svg");
+            NamedNodeMap nodemap = nodelist.item(0).getAttributes();
+            width = nodemap.getNamedItem("width").getNodeValue();
+            height = nodemap.getNamedItem("height").getNodeValue();
+
+            // strip pt from width and height
+            int intwidth = Integer.parseInt(
+                    width.substring(0, width.length() - 2));
+            int intheight = Integer.parseInt(
+                    height.substring(0, height.length() - 2));
+
+            mCamera.moveTo(intwidth / 2, intheight / 2);
+            
+        } catch(Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
 
     }
 
