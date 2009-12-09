@@ -17,8 +17,10 @@ import java.awt.event.*;
 import java.io.File;
 import javax.swing.*;
 import org.swixml.*;
+import fr.inria.zvtm.engine.*;
 
 import java.util.Random;
+import java.util.Vector;
 
 /**
  *
@@ -32,11 +34,23 @@ public class Gui extends WindowAdapter {
     JTextField input;
     JTextArea console;
 
+    JTabbedPane panelview;
+    JFrame frameview;
+
+    ZVTMView zvtm;
+
     public void start() throws Exception {
         File guiFile = new File( "src/main/resources/Gui.xml" );
         swix = new SwingEngine( this );
         swix.render( guiFile );
+
+        zvtm = new ZVTMView();
+
+        panelview.addTab("Render", zvtm.init());
+        
         swix.getRootComponent().setVisible( true );
+        
+       // System.out.println(panelview.getSize());
     }
 
     public Action random = new AbstractAction() {
@@ -58,6 +72,9 @@ public class Gui extends WindowAdapter {
             int tempInt = Integer.parseInt(str);
             mTree.insert(tempInt);
             input.setText("");
+
+            zvtm.loadSvg(mTree.graph());
+
         }
     };
 

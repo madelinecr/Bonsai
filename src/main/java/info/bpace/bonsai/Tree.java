@@ -62,7 +62,7 @@ public class Tree {
         return values.toString();
     }
 
-    public void graph() {
+    public File graph() {
         GraphViz graph = new GraphViz();
 
         graph.addln(graph.start_graph());
@@ -71,7 +71,7 @@ public class Tree {
         graph.addln(graph.end_graph());
 
         File out = new File("out.svg");
-        //graph.writeGraphToFile( graph.getGraph( graph.getDotSource() ), out );
+        graph.writeGraphToFile( graph.getGraph( graph.getDotSource() ), out );
         System.out.println( graph.getDotSource() );
         
         try {
@@ -81,6 +81,8 @@ public class Tree {
         } catch(Exception e) {
             System.err.println("File error: " + e);
         }
+
+        return out;
     }
 
 
