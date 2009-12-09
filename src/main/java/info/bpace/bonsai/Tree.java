@@ -15,7 +15,6 @@ package info.bpace.bonsai;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.PrintWriter;
 
 /**
  *
@@ -57,8 +56,10 @@ public class Tree {
         return searchTree(target, root);
     }
 
-    public void traverse() {
-        traverseInOrder(root);
+    public String traverse() {
+        StringBuilder values = new StringBuilder();
+        traverseInOrder(root, values); // recursive call
+        return values.toString();
     }
 
     public void graph() {
@@ -70,7 +71,7 @@ public class Tree {
         graph.addln(graph.end_graph());
 
         File out = new File("out.svg");
-        graph.writeGraphToFile( graph.getGraph( graph.getDotSource() ), out );
+        //graph.writeGraphToFile( graph.getGraph( graph.getDotSource() ), out );
         System.out.println( graph.getDotSource() );
         
         try {
@@ -106,6 +107,10 @@ public class Tree {
             Integer entryIndex = searchNode(tree, data);
             TreeNode subTree;
 
+            // if the value was found in a node while traversing, return
+            if(entryIndex == -1)
+                return higher;
+
             if (entryIndex > 0) { // if data is NOT less than leftmost node
                 subTree = tree.entries[entryIndex - 1].subTree;
             } else { // else data is less than leftmost node
@@ -137,13 +142,19 @@ public class Tree {
      */
     private Integer searchNode(TreeNode node, Integer target) {
         Integer walker = 0;
-        if (target < node.entries[0].key) {
+        if (target < node.entries[0].key) { // target less than first
             walker = 0;
-        } else {
+        } else if(target > node.entries[0].key) { // target greater than first
             walker = node.entryCount;
-            while (target < node.entries[walker - 1].key) {
-                walker -= 1;
+            if(target == node.entries[walker - 1].key) { // target is entry
+                walker = -1;
+            } else { // target is greater or less
+                while (target < node.entries[walker - 1].key) {
+                    walker -= 1;
+                }
             }
+        } else {
+            walker = -1;
         }
         return walker;
     }
@@ -247,15 +258,18 @@ public class Tree {
     }
 
 
-    private void traverseInOrder(TreeNode node) {
+    private void traverseInOrder(TreeNode node, StringBuilder values) {
         if(node == null)
             return;
 
-        traverseInOrder(node.subTree);
+        traverseInOrder(node.subTree, values);
 
         for(Integer walker = 0; walker < node.entryCount; walker++) {
-            System.out.println(node.entries[walker].key);
-            traverseInOrder(node.entries[walker].subTree);
+            if(values.length() != 0) {
+                values.append(", ");
+            }
+            values.append(node.entries[walker].key);
+            traverseInOrder(node.entries[walker].subTree, values);
         }
     }
 

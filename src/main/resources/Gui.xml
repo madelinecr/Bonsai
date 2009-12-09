@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<frame size="400,240" resizable="0" title="Bonsai" defaultCloseOperation="JFrame.EXIT_ON_CLOSE">
+    <panel layout="GridBagLayout">
+
+        <label text="Input value: ">
+            <gridbagconstraints gridx="0" gridy="0" weightx="0.5"/>
+        </label>
+        <textfield id="input" action="submit">
+            <gridbagconstraints gridx="1" gridy="0" weightx="0.5" fill="GridBagConstraints.HORIZONTAL"/>
+        </textfield>
+
+        <button text="Add 1000 random values" action="random">
+            <gridbagconstraints gridx="0" gridy="1" weightx="0.5" fill="GridBagConstraints.HORIZONTAL"/>
+        </button>
+
+        <button text="Add value to tree" action="submit">
+            <gridbagconstraints gridx="1" gridy="1" weightx="0.5" fill="GridBagConstraints.HORIZONTAL"/>
+        </button>
+
+        <button text="Print tree values" action="traverse">
+            <gridbagconstraints gridx="0" gridy="2" weighty="0.1" fill="GridBagConstraints.HORIZONTAL"/>
+        </button>
+
+        <scrollpane>
+        <textarea id="console" editable="0" linewrap="1"/>
+            <gridbagconstraints gridx="0" gridy="3" gridwidth="2" weighty="1" fill="GridBagConstraints.BOTH"/>
+
+        </scrollpane>
+    </panel>
+</frame>

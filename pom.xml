@@ -32,5 +32,10 @@
         <version>0.10.0</version>
         <scope>compile</scope>
     </dependency>
+    <dependency>
+        <groupId>org.swixml</groupId>
+        <artifactId>swixml</artifactId>
+        <version>1.5.144</version>
+    </dependency>
   </dependencies>
 </project>
