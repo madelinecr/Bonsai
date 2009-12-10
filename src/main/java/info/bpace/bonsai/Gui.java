@@ -45,12 +45,8 @@ public class Gui extends WindowAdapter {
         swix.render( guiFile );
 
         zvtm = new ZVTMView();
-
-        panelview.addTab("Render", zvtm.init());
         
         swix.getRootComponent().setVisible( true );
-        
-       // System.out.println(panelview.getSize());
     }
 
     public Action random = new AbstractAction() {

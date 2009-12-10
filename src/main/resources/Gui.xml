@@ -23,12 +23,10 @@
             <gridbagconstraints gridx="2" gridy="1" fill="GridBagConstraints.HORIZONTAL"/>
         </button>
         
-        <tabbedpane id="panelview" titles="Console">
-            <scrollpane>
+        <scrollpane>
                 <textarea id="console" editable="0" linewrap="1"/>
                 <gridbagconstraints gridx="0" gridy="2" gridwidth="3" weighty="0.2" fill="GridBagConstraints.BOTH"/>
-            </scrollpane>
-            <gridbagconstraints gridx="0" gridy="3" gridwidth="3" weighty="0.8" fill="GridBagConstraints.BOTH"/>
-        </tabbedpane>
+        </scrollpane>
+
     </panel>
 </frame>
