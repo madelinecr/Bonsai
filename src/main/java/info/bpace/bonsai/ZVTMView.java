@@ -25,7 +25,6 @@ import javax.swing.JPanel;
 
 import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
 import org.apache.batik.util.XMLResourceDescriptor;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
@@ -41,12 +40,14 @@ public class ZVTMView {
 
     View demoView;
     Camera mCamera;
+    Portal mPortal;
 
     short translucentMode = 1;
 
     short viewType = 0;
 
     String vts;
+    String spaceName = "mainSpace";
 
     ZVTMView() {
         vsm = VirtualSpaceManager.INSTANCE;
@@ -64,21 +65,18 @@ public class ZVTMView {
     }
 
     public Component init() {
-        vs = vsm.addVirtualSpace("mainSpace");
+        vs = vsm.addVirtualSpace(spaceName);
         Vector cameras = new Vector();
         mCamera = vs.addCamera();
         mCamera.setZoomFloor(-90);
         cameras.add(mCamera);
 
-        JPanel tempPanel = new JPanel();
-        JFrame tempFrame = new JFrame();
-
-        demoView = vsm.addFrameView(cameras, "mainSpace", 100, 100, true, true, viewType, tempPanel, tempFrame);
+        JPanel tempPanel = vsm.addPanelView(cameras, spaceName, 400, 400);
+        demoView = vsm.getView(spaceName);
+        //demoView = vsm.addFrameView(cameras, "mainSpace", 400, 400, true, true, viewType, tempPanel, tempFrame);
         demoView.setBackgroundColor(Color.WHITE);
-        demoView.setSize(400, 400);
-        demoView.setResizable(true);
 
-        return tempPanel.getComponent(0);
+        return tempPanel;
     }
 
     public void loadSvg(File svg) {
@@ -109,6 +107,18 @@ public class ZVTMView {
                     height.substring(0, height.length() - 2));
 
             mCamera.moveTo(intwidth / 2, intheight / 2);
+
+            System.out.println(mCamera.getFocal());
+            System.out.println(mCamera.getAltitude());
+          //  double fov = 2 * Math.atan(400/(2 * mCamera.getFocal()));
+          //  System.out.println("fov: " + fov);
+
+
+           // double distance = Math.sqrt( Math.pow( ((intwidth/2)/Math.sin(fov/2)) * (Math.sin(90)), 2 ) - Math.pow((intwidth/2), 2) );
+           // double distance = Math.sqrt( Math.pow( ((intwidth/2)/Math.sin(fov/2)) * (Math.sin(90)), 2 ) - Math.pow((intwidth/2), 2) );
+
+           // float dist = (float)distance;
+           // mCamera.setAltitude(vs.);
             
         } catch(Exception e) {
             System.out.println("Exception: " + e.getMessage());
