@@ -37,7 +37,7 @@ public class ZVTMView {
     View demoView;
     Camera mCamera;
 
-    short translucentMode = 1;
+    short translucentMode = 0;
 
     short viewType = 0;
 
@@ -46,8 +46,6 @@ public class ZVTMView {
 
     ZVTMView() {
         vsm = VirtualSpaceManager.INSTANCE;
-
-
         viewType = View.STD_VIEW;
 	vts = "View type: Standard";
 	switch(viewType) {
@@ -64,6 +62,7 @@ public class ZVTMView {
         vs = vsm.addVirtualSpace(spaceName);
         eh = new ZVTMEventHandler();
 
+        //add camera to scene
         Vector cameras = new Vector();
         mCamera = vs.addCamera();
         mCamera.setZoomFloor(-90);
@@ -98,7 +97,6 @@ public class ZVTMView {
 
             // autocenter camera
             demoView.centerOnRegion(mCamera, 300, glyphCoords[0], glyphCoords[3], glyphCoords[2], glyphCoords[1]);
-
             
         } catch(Exception e) {
             System.out.println("Exception: " + e.getMessage());
