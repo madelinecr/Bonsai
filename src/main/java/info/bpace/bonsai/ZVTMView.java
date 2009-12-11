@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Vector;
 
+import javax.swing.JFrame;
 import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.w3c.dom.Document;
@@ -73,14 +74,18 @@ public class ZVTMView
         detailCamera.setZoomFloor(-90);
         cameras.add(detailCamera);
 
-        vsm.addFrameView(cameras, spaceName, viewType, 600, 800, true, true);
+        vsm.addFrameView(cameras, spaceName, viewType, 800, 800, false, true);
         mainView = vsm.getView(spaceName);
         mainView.setBackgroundColor(Color.WHITE);
+
+        JFrame frame = (JFrame)mainView.getFrame();
+        frame.setResizable(false);
+
         mainView.setEventHandler(eh);
         mainView.setNotifyMouseMoved(true);
 
         overviewCamera = vs.addCamera();
-        overviewPortal = new CameraPortal(0, 0, 400, 50, overviewCamera);
+        overviewPortal = new CameraPortal(0, 0, 800, 100, overviewCamera);
         vsm.addPortal(overviewPortal, mainView);
     }
 
