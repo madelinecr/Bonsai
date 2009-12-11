@@ -14,7 +14,6 @@
 package info.bpace.bonsai;
 
 import fr.inria.zvtm.engine.*;
-import fr.inria.zvtm.lens.*;
 import fr.inria.zvtm.svg.SVGReader;
 import java.awt.Color;
 import java.io.File;
@@ -34,10 +33,11 @@ public class ZVTMView {
     VirtualSpace vs;
     ViewEventHandler eh;
 
-    View demoView;
-    Camera mCamera;
+    View mainView;
+    Camera detailCamera;
 
-    short translucentMode = 0;
+    CameraPortal overviewPortal;
+    Camera overviewCamera;
 
     short viewType = 0;
 
@@ -64,18 +64,19 @@ public class ZVTMView {
 
         //add camera to scene
         Vector cameras = new Vector();
-        mCamera = vs.addCamera();
-        mCamera.setZoomFloor(-90);
-        cameras.add(mCamera);
+        detailCamera = vs.addCamera();
+        detailCamera.setZoomFloor(-90);
+        cameras.add(detailCamera);
 
-        //JPanel tempPanel = vsm.addPanelView(cameras, spaceName, 400, 400);
         vsm.addFrameView(cameras, spaceName, viewType, 600, 800, true, true);
-        demoView = vsm.getView(spaceName);
-        demoView.setBackgroundColor(Color.WHITE);
-        demoView.setEventHandler(eh);
-        demoView.setNotifyMouseMoved(true);
+        mainView = vsm.getView(spaceName);
+        mainView.setBackgroundColor(Color.WHITE);
+        mainView.setEventHandler(eh);
+        mainView.setNotifyMouseMoved(true);
 
-        //System.out.println(vts);
+        overviewCamera = vs.addCamera();
+        overviewPortal = new CameraPortal(0, 0, 400, 50, overviewCamera);
+        vsm.addPortal(overviewPortal, mainView);
     }
 
     public void loadSvg(File svg) {
@@ -89,14 +90,15 @@ public class ZVTMView {
             fileInput = new FileInputStream(svg);
             doc = f.createSVGDocument( "out.svg", fileInput );
             SVGReader.load(doc, vs, false, "out.svg");
-            vsm.repaintNow(demoView);
+            vsm.repaintNow(mainView);
 
             // get farmost coords
             long[] glyphCoords = new long[4];
             glyphCoords = vs.findFarmostGlyphCoords();
 
             // autocenter camera
-            demoView.centerOnRegion(mCamera, 300, glyphCoords[0], glyphCoords[3], glyphCoords[2], glyphCoords[1]);
+            mainView.centerOnRegion(detailCamera, 300, glyphCoords[0], glyphCoords[3], glyphCoords[2], glyphCoords[1]);
+            overviewPortal.getGlobalView(300);
             
         } catch(Exception e) {
             System.out.println("Exception: " + e.getMessage());
