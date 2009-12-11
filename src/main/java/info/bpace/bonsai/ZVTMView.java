@@ -28,7 +28,8 @@ import org.w3c.dom.Document;
  *
  * @author Blaine Pace <blainepace at gmail.com>
  */
-public class ZVTMView {
+public class ZVTMView
+{
     VirtualSpaceManager vsm;
     VirtualSpace vs;
     ViewEventHandler eh;
@@ -44,12 +45,15 @@ public class ZVTMView {
     String vts;
     String spaceName = "mainSpace";
 
-    ZVTMView() {
+    ZVTMView()
+    {
         vsm = VirtualSpaceManager.INSTANCE;
         viewType = View.STD_VIEW;
 	vts = "View type: Standard";
-	switch(viewType) {
-            case View.OPENGL_VIEW: {
+	switch(viewType)
+        {
+            case View.OPENGL_VIEW:
+            {
                 viewType = View.OPENGL_VIEW;
                 vts = "View type: OpenGL";
                 break;
@@ -58,7 +62,8 @@ public class ZVTMView {
         init();
     }
 
-    public void init() {
+    public void init()
+    {
         vs = vsm.addVirtualSpace(spaceName);
         eh = new ZVTMEventHandler();
 
@@ -79,14 +84,16 @@ public class ZVTMView {
         vsm.addPortal(overviewPortal, mainView);
     }
 
-    public void loadSvg(File svg) {
+    public void loadSvg(File svg)
+    {
         String parser = XMLResourceDescriptor.getXMLParserClassName();
         SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
 
         FileInputStream fileInput;
         Document doc;
 
-        try {
+        try
+        {
             fileInput = new FileInputStream(svg);
             doc = f.createSVGDocument( "out.svg", fileInput );
             SVGReader.load(doc, vs, false, "out.svg");
@@ -100,10 +107,10 @@ public class ZVTMView {
             mainView.centerOnRegion(detailCamera, 300, glyphCoords[0], glyphCoords[3], glyphCoords[2], glyphCoords[1]);
             overviewPortal.getGlobalView(300);
             
-        } catch(Exception e) {
+        }
+        catch(Exception e)
+        {
             System.out.println("Exception: " + e.getMessage());
         }
-
     }
-
 }

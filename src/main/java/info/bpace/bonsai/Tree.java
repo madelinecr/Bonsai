@@ -20,7 +20,8 @@ import java.io.FileWriter;
  *
  * @author Blaine Pace <blainepace at gmail.com>
  */
-public class Tree {
+public class Tree
+{
 
     private TreeNode root;
     private Integer order;
@@ -29,7 +30,8 @@ public class Tree {
     /**
      * default: Creates tree of order 4.
      */
-    public Tree() {
+    public Tree()
+    {
         order = 4;
         fields = order - 1;
     }
@@ -38,12 +40,14 @@ public class Tree {
      * Inserts node into b-tree
      * @param data
      */
-    public void insert(Integer data) {
+    public void insert(Integer data)
+    {
 
         TreeEntry upEntry = new TreeEntry();
         boolean higher = insertNode(root, data, upEntry);
 
-        if (higher == true) {
+        if (higher == true)
+        {
             TreeNode newRoot = new TreeNode();
             newRoot.entries[0] = upEntry;
             newRoot.subTree = root;
@@ -52,17 +56,20 @@ public class Tree {
         }
     }
 
-    public boolean search(Integer target) {
+    public boolean search(Integer target)
+    {
         return searchTree(target, root);
     }
 
-    public String traverse() {
+    public String traverse()
+    {
         StringBuilder values = new StringBuilder();
         traverseInOrder(root, values); // recursive call
         return values.toString();
     }
 
-    public File graph() {
+    public File graph()
+    {
         GraphViz graph = new GraphViz();
 
         graph.addln(graph.start_graph());
@@ -74,11 +81,14 @@ public class Tree {
         graph.writeGraphToFile( graph.getGraph( graph.getDotSource() ), out );
         System.out.println( graph.getDotSource() );
         
-        try {
+        try
+        {
             FileWriter outText = new FileWriter(new File("outtext.txt"));
             outText.write( graph.getDotSource() );
             outText.close();
-        } catch(Exception e) {
+        }
+        catch(Exception e)
+        {
             System.err.println("File error: " + e);
         }
 
@@ -96,15 +106,18 @@ public class Tree {
      * @param upEntry
      * @return
      */
-    private boolean insertNode(TreeNode tree, Integer data, TreeEntry upEntry) {
+    private boolean insertNode(TreeNode tree, Integer data, TreeEntry upEntry)
+    {
         boolean higher = false;
 
         // if there is no root node
-        if (tree == null) {
+        if (tree == null)
+        {
             upEntry.key = data;
             higher = true;
-        } else {
-
+        }
+        else
+        {
             // find which node data fits between
             Integer entryIndex = searchNode(tree, data);
             TreeNode subTree;
@@ -113,20 +126,27 @@ public class Tree {
             if(entryIndex == -1)
                 return higher;
 
-            if (entryIndex > 0) { // if data is NOT less than leftmost node
+            if (entryIndex > 0) // if data is NOT less than leftmost node
+            {
                 subTree = tree.entries[entryIndex - 1].subTree;
-            } else { // else data is less than leftmost node
+            }
+            else // else data is less than leftmost node
+            {
                 subTree = tree.subTree;
             }
 
             // recurse!
             higher = insertNode(subTree, data, upEntry);
 
-            if (higher == true) {
-                if (tree.entryCount == fields) { // node full
+            if (higher == true)
+            {
+                if (tree.entryCount == fields) // node full
+                {
                     splitNode(tree, entryIndex, upEntry);
                     higher = true;
-                } else {
+                }
+                else
+                {
                     insertEntry(tree, entryIndex, upEntry);
                     higher = false;
                 }
@@ -142,20 +162,30 @@ public class Tree {
      * @param target The value to search for
      * @return the index of the largest entry smaller than the target.
      */
-    private Integer searchNode(TreeNode node, Integer target) {
+    private Integer searchNode(TreeNode node, Integer target)
+    {
         Integer walker = 0;
-        if (target < node.entries[0].key) { // target less than first
+        if (target < node.entries[0].key) // target less than first
+        {
             walker = 0;
-        } else if(target > node.entries[0].key) { // target greater than first
+        }
+        else if(target > node.entries[0].key) // target greater than first
+        {
             walker = node.entryCount;
-            if(target == node.entries[walker - 1].key) { // target is entry
+            if(target == node.entries[walker - 1].key) // target is entry
+            {
                 walker = -1;
-            } else { // target is greater or less
-                while (target < node.entries[walker - 1].key) {
+            }
+            else // target is greater or less
+            {
+                while (target < node.entries[walker - 1].key)
+                {
                     walker -= 1;
                 }
             }
-        } else {
+        }
+        else
+        {
             walker = -1;
         }
         return walker;
@@ -168,8 +198,8 @@ public class Tree {
      * @param upEntry
      */
     private void splitNode(TreeNode node, Integer entryIndex,
-                           TreeEntry upEntry) {
-        
+                           TreeEntry upEntry)
+    {
         Integer minEntries = (order / 2) - 1; // default 1
         Integer medianIndex = minEntries + 1; // default 2
         
@@ -178,13 +208,17 @@ public class Tree {
         
         TreeNode rightNode = new TreeNode();
 
-        if (entryIndex <= minEntries) {
+        if (entryIndex <= minEntries)
+        {
             fromIndex = minEntries + 1; // default 2
-        } else {
+        }
+        else
+        {
             fromIndex = minEntries + 2; // default 3
         }
 
-        while (fromIndex <= node.entryCount) {
+        while (fromIndex <= node.entryCount)
+        {
             rightNode.entries[toIndex - 1] = node.entries[fromIndex - 1];
             rightNode.entryCount += 1;
             node.entries[fromIndex - 1] = null;
@@ -193,12 +227,14 @@ public class Tree {
         }
         node.entryCount -= rightNode.entryCount;
 
-        if (entryIndex <= minEntries) {
+        if (entryIndex <= minEntries)
+        {
             insertEntry(node, entryIndex, upEntry);
-        } else {
+        }
+        else
+        {
             insertEntry(rightNode, searchNode(rightNode, upEntry.key), upEntry);
         }
-
 
         // build entry for parent
         upEntry.key = node.entries[medianIndex - 1].key;
@@ -215,9 +251,11 @@ public class Tree {
      * @param newEntry
      */
     private void insertEntry(TreeNode node, Integer entryIndex,
-                             TreeEntry newEntry) {
+                             TreeEntry newEntry)
+    {
         Integer shifter = node.entryCount;
-        while (shifter > entryIndex) {
+        while (shifter > entryIndex)
+        {
             node.entries[shifter] = node.entries[shifter - 1];
             shifter -= 1;
         }
@@ -230,27 +268,34 @@ public class Tree {
         return;
     }
     
-    private boolean searchTree(Integer target, TreeNode node) {
+    private boolean searchTree(Integer target, TreeNode node)
+    {
         // hit bottom of tree
-        if (node == null) {
+        if (node == null)
+        {
             return false;
         }
 
         // target is less than first entry -- recurse
-        if (target < node.entries[0].key) {
+        if (target < node.entries[0].key)
+        {
             searchTree(target, node.subTree);
-        } // target is first entry
-        else if (target == node.entries[0].key) {
+        } 
+        else if (target == node.entries[0].key) // target is first entry
+        {
             return true;
-        } // target is greater than first entry
-        else {
-
+        } 
+        else // target is greater than first entry
+        {
             // check through entries in node
-            for (Integer walker = 0; walker < node.entryCount; walker++) {
-
-                if (target > node.entries[walker].key) {
+            for (Integer walker = 0; walker < node.entryCount; walker++)
+            {
+                if (target > node.entries[walker].key)
+                {
                     searchTree(target, node.subTree);
-                } else if (target == node.entries[walker].key) {
+                }
+                else if (target == node.entries[walker].key)
+                {
                     return true;
                 }
             }
@@ -260,14 +305,17 @@ public class Tree {
     }
 
 
-    private void traverseInOrder(TreeNode node, StringBuilder values) {
+    private void traverseInOrder(TreeNode node, StringBuilder values)
+    {
         if(node == null)
             return;
 
         traverseInOrder(node.subTree, values);
 
-        for(Integer walker = 0; walker < node.entryCount; walker++) {
-            if(values.length() != 0) {
+        for(Integer walker = 0; walker < node.entryCount; walker++)
+        {
+            if(values.length() != 0)
+            {
                 values.append(", ");
             }
             values.append(node.entries[walker].key);
@@ -275,12 +323,14 @@ public class Tree {
         }
     }
 
-    private void buildGraph(GraphViz graph, TreeNode node) {
+    private void buildGraph(GraphViz graph, TreeNode node)
+    {
         StringBuilder string = new StringBuilder();
 
         // build node itself
         string.append("node" + node.hashCode() + "[label=\"");
-        for(Integer i = 0; i < node.entryCount; i++) {
+        for(Integer i = 0; i < node.entryCount; i++)
+        {
             if(i != 0)
                 string.append("|");
             string.append("<f" + i + ">|" + node.entries[i].key);
@@ -292,17 +342,20 @@ public class Tree {
 
         
         // build leftmost node link
-        if(node.subTree != null) {
+        if(node.subTree != null)
+        {
             string.append("node" + node.hashCode() + ":f0");
             string.append("->");
             string.append("node" + node.subTree.hashCode() + ";");
         }
-        graph.addln( string.toString() );
+        graph.addln(string.toString());
         string.setLength(0);
 
         // build the rest of the node links
-        for(Integer i = 1; i <= node.entryCount; i++) {
-            if(node.entries[i - 1].subTree != null) {
+        for(Integer i = 1; i <= node.entryCount; i++)
+        {
+            if(node.entries[i - 1].subTree != null)
+            {
                 string.append("node" + node.hashCode() + ":f" + i);
                 string.append("->");
                 string.append("node" + node.entries[i - 1].subTree.hashCode() + ";");
@@ -313,7 +366,9 @@ public class Tree {
 
         if(node.subTree != null)
             buildGraph(graph, node.subTree);
-        for(Integer i = 0; i < node.entryCount; i++) {
+
+        for(Integer i = 0; i < node.entryCount; i++)
+        {
             if(node.entries[i].subTree != null)
                 buildGraph(graph, node.entries[i].subTree);
         }
@@ -323,19 +378,20 @@ public class Tree {
 // Private internal classes
 // ----------------------------------------------------------------------------
 
-    private class TreeEntry {
-
+    private class TreeEntry
+    {
         private Integer key;
         private TreeNode subTree;
     }
 
-    private class TreeNode {
-
+    private class TreeNode
+    {
         private TreeNode subTree;
         private Integer entryCount;
         private TreeEntry[] entries;
 
-        public TreeNode() {
+        public TreeNode()
+        {
             entryCount = 0;
             entries = new TreeEntry[fields];
         }

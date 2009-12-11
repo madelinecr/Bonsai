@@ -17,12 +17,13 @@ package info.bpace.bonsai;
  *
  * @author Blaine Pace <blainepace at gmail.com>
  */
-public class Main {
-
+public class Main
+{
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception
+    {
         // TODO code application logic here
         Gui mGui = new Gui();
         mGui.start();

@@ -17,16 +17,15 @@ import java.awt.event.*;
 import java.io.File;
 import javax.swing.*;
 import org.swixml.*;
-import fr.inria.zvtm.engine.*;
 
 import java.util.Random;
-import java.util.Vector;
 
 /**
  *
  * @author Blaine Pace <blainepace at gmail.com>
  */
-public class Gui extends WindowAdapter {
+public class Gui extends WindowAdapter
+{
     private SwingEngine swix;
     private Tree mTree = new Tree();
 
@@ -39,53 +38,61 @@ public class Gui extends WindowAdapter {
 
     ZVTMView zvtm;
 
-    public void start() throws Exception {
-        File guiFile = new File( "src/main/resources/Gui.xml" );
-        swix = new SwingEngine( this );
-        swix.render( guiFile );
+    public void start() throws Exception
+    {
+        File guiFile = new File("src/main/resources/Gui.xml");
+        swix = new SwingEngine(this);
+        swix.render(guiFile);
 
         zvtm = new ZVTMView();
         
-        swix.getRootComponent().setVisible( true );
+        swix.getRootComponent().setVisible(true);
     }
 
-    public Action random = new AbstractAction() {
+    public Action random = new AbstractAction()
+    {
         @Override
-        public void actionPerformed( ActionEvent e ) {
+        public void actionPerformed(ActionEvent e)
+        {
             Random rand = new Random();
-            for(Integer i = 0; i < 1000; i++) {
-                mTree.insert( rand.nextInt() % 3000 );
+            for(Integer i = 0; i < 1000; i++)
+            {
+                mTree.insert(rand.nextInt() % 3000);
             }
 
             console.append("Added 1000 entries.\n");
         }
     };
 
-    public Action submit = new AbstractAction() {
+    public Action submit = new AbstractAction()
+    {
         @Override
-        public void actionPerformed( ActionEvent e ) {
+        public void actionPerformed(ActionEvent e)
+        {
             String str = input.getText();
             int tempInt = Integer.parseInt(str);
             mTree.insert(tempInt);
             input.setText("");
 
             zvtm.loadSvg(mTree.graph());
-
         }
     };
 
-    public Action traverse = new AbstractAction() {
+    public Action traverse = new AbstractAction()
+    {
         @Override
-        public void actionPerformed( ActionEvent e ) {
+        public void actionPerformed(ActionEvent e)
+        {
             console.append(mTree.traverse() + "\n");
         }
     };
 
-    public Action export = new AbstractAction() {
+    public Action export = new AbstractAction()
+    {
         @Override
-        public void actionPerformed( ActionEvent e ) {
+        public void actionPerformed(ActionEvent e)
+        {
             mTree.graph();
         }
     };
-
 }
