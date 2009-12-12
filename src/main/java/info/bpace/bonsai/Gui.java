@@ -31,7 +31,6 @@ public class Gui extends WindowAdapter
 
     // Instantiated through swixml
     JTextField input;
-    JTextArea console;
 
     JTabbedPane panelview;
     JFrame frameview;
@@ -55,12 +54,11 @@ public class Gui extends WindowAdapter
         public void actionPerformed(ActionEvent e)
         {
             Random rand = new Random();
-            for(Integer i = 0; i < 1000; i++)
+            for(Integer i = 0; i < 300; i++)
             {
-                mTree.insert(rand.nextInt() % 3000);
+                mTree.insert(rand.nextInt() % 500);
             }
-
-            console.append("Added 1000 entries.\n");
+            zvtm.loadSvg(mTree.graph());
         }
     };
 
@@ -75,24 +73,6 @@ public class Gui extends WindowAdapter
             input.setText("");
 
             zvtm.loadSvg(mTree.graph());
-        }
-    };
-
-    public Action traverse = new AbstractAction()
-    {
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            console.append(mTree.traverse() + "\n");
-        }
-    };
-
-    public Action export = new AbstractAction()
-    {
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            mTree.graph();
         }
     };
 }

@@ -124,7 +124,10 @@ public class Tree
 
             // if the value was found in a node while traversing, return
             if(entryIndex == -1)
+            {
+                higher = false;
                 return higher;
+            }
 
             if (entryIndex > 0) // if data is NOT less than leftmost node
             {
@@ -138,7 +141,7 @@ public class Tree
             // recurse!
             higher = insertNode(subTree, data, upEntry);
 
-            if (higher == true)
+            if (higher == true && entryIndex != -1)
             {
                 if (tree.entryCount == fields) // node full
                 {
@@ -172,13 +175,15 @@ public class Tree
         else if(target > node.entries[0].key) // target greater than first
         {
             walker = node.entryCount;
-            if(target == node.entries[walker - 1].key) // target is entry
+
+            while (target < node.entries[walker - 1].key)
             {
-                walker = -1;
-            }
-            else // target is greater or less
-            {
-                while (target < node.entries[walker - 1].key)
+                if(target == node.entries[walker - 1].key)
+                {
+                    walker = -1;
+                    return walker;
+                }
+                else
                 {
                     walker -= 1;
                 }
@@ -233,7 +238,9 @@ public class Tree
         }
         else
         {
-            insertEntry(rightNode, searchNode(rightNode, upEntry.key), upEntry);
+            Integer newEntryIndex = searchNode(rightNode, upEntry.key);
+            if(newEntryIndex != -1)
+                insertEntry(rightNode, searchNode(rightNode, upEntry.key), upEntry);
         }
 
         // build entry for parent
