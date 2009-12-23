@@ -80,7 +80,7 @@ public class Tree
 		File out = new File("out.svg");
 		graph.writeGraphToFile( graph.getGraph( graph.getDotSource() ), out );
 		// System.out.println( graph.getDotSource() );
-		
+		/*
 		try
 		{
 			FileWriter outText = new FileWriter(new File("outtext.txt"));
@@ -91,7 +91,7 @@ public class Tree
 		{
 			System.err.println("File error: " + e);
 		}
-
+		*/
 		return out;
 	}
 
