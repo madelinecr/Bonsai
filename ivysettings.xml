@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivysettings>
+	<settings defaultResolver="chained"/>
+	<property name="java.net.maven.pattern" value="[organisation]/jars/[module]-[revision].[ext]"/>
+	<resolvers>
+		<chain name="chained" returnFirst="true">
+			<ibiblio name="ibilio" m2compatible="true"/>
+			<ibiblio name="ibiblio" root="http://zvtm.sourceforge.net/maven" m2compatible="true"/>
+		</chain>
+	</resolvers>
+</ivysettings>

@@ -1,0 +1,105 @@
+<project name="bonsai" basedir="." default="main">
+
+	<property name="src.dir" value="src"/>
+	<property name="build.dir" value="build"/>
+	<property name="classes.dir" value="${build.dir}/classes"/>
+	<property name="jar.dir" value="${build.dir}/jar"/>
+	<property name="package.dir" value="${build.dir}/package"/>
+	<property name="bundle.dir" value="${build.dir}/bundle"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="res.dir" value="res"/>
+
+	<property name="main-class"	 value="info.bpace.bonsai.Main"/>
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar"/>
+	</path>
+
+<!-- Start targets -->
+
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${classes.dir}"/>
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath"/>
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${jar.dir}"/>
+		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="package-libs" depends="compile">
+		<mkdir dir="${package.dir}"/>
+		<jar destfile="${package.dir}/${ant.project.name}-libs.jar" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}" />
+			</manifest>
+			
+			<zipgroupfileset dir="${lib.dir}" />
+		</jar>
+	</target>
+
+	<target name="package" depends="compile, package-libs">
+		<manifestclasspath property="jar.classpath" jarfile="${package.dir}/${ant.project.name}.jar">
+			<classpath refid="classpath" />
+		</manifestclasspath>
+		
+		<jar destfile="${package.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}"/>
+				<attribute name="Class-Path" value="${ant.project.name}-libs.jar"/>
+			</manifest>
+		</jar>
+		
+		<mkdir dir="${package.dir}/${res.dir}"/>
+		<copy todir="${package.dir}/${res.dir}">
+			<fileset dir="${res.dir}"/>
+		</copy>
+	</target>
+	
+	<target name="bundle" depends="package">
+		<mkdir dir="${bundle.dir}"/>
+		
+		<jarbundler dir="${bundle.dir}" name="${ant.project.name}" 
+		 mainclass="${main-class}" workingdirectory="$APP_PACKAGE/Contents/Resources">
+			<jarfileset dir="${package.dir}"/>
+			<resourcefileset dir="./" includes="res/*"/>
+		</jarbundler>
+	</target>
+
+	<target name="run" depends="jar">
+		<java fork="true" classname="${main-class}">
+			<classpath>
+				<path refid="classpath"/>
+				<path location="${jar.dir}/${ant.project.name}.jar"/>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="clean-build" depends="clean,jar"/>
+	
+	<target name="clean-package" depends="clean,package"/>
+
+	<target name="main" depends="clean,run"/>
+	
+	<!-- =================================
+	target: resolve              
+	================================= -->
+	<target name="resolve" description="--> retrieve dependencies with ivy">
+		<ivy-retrieve />
+	</target>
+	
+	<taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler"/>
+	<taskdef name="ivy-configure" classname="org.apache.ivy.ant.IvyConfigure"/>
+  <taskdef name="ivy-resolve" classname="org.apache.ivy.ant.IvyResolve"/>
+  <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
+  <taskdef name="ivy-publish" classname="org.apache.ivy.ant.IvyPublish"/>
+
+</project>

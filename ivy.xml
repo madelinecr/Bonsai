@@ -1,0 +1,8 @@
+<ivy-module version="2.0">
+	<info organisation="info.bpace" module="Bonsai"/>
+	<dependencies>
+		<dependency org="fr.inria.zvtm" name="zvtm" rev="0.10.0"/>
+		<dependency org="org.swixml" name="swixml" rev="1.5.144"/>
+		<dependency org="org.apache.xmlgraphics" name="batik-svg-dom" rev="1.7"/>
+	</dependencies>
+</ivy-module>
