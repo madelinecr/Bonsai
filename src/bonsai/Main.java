@@ -19,15 +19,15 @@ package info.bpace.bonsai;
  */
 public class Main
 {
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws Exception
-    {
-        // TODO code application logic here
-        Gui mGui = new Gui();
-        mGui.start();
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String[] args) throws Exception
+	{
+		// TODO code application logic here
+		Gui mGui = new Gui();
+		mGui.start();
 
-    }
+	}
 
 }

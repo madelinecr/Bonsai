@@ -27,58 +27,58 @@ import java.util.Random;
  */
 public class Gui extends WindowAdapter
 {
-    private SwingEngine swix;
-    private Tree mTree = new Tree();
+	private SwingEngine swix;
+	private Tree mTree = new Tree();
 
-    // Instantiated through swixml
-    JTextField input;
+	// Instantiated through swixml
+	JTextField input;
 
-    JTabbedPane panelview;
-    JFrame frameview;
+	JTabbedPane panelview;
+	JFrame frameview;
 
-    ZVTMView zvtm;
+	ZVTMView zvtm;
 
-    public void start() throws Exception
-    {
-        File guiFile = new File("res/Gui.xml");
-        swix = new SwingEngine(this);
-        swix.render(guiFile);
+	public void start() throws Exception
+	{
+		File guiFile = new File("res/Gui.xml");
+		swix = new SwingEngine(this);
+		swix.render(guiFile);
 
-        zvtm = new ZVTMView();
-        
-        swix.getRootComponent().setVisible(true);
-    }
+		zvtm = new ZVTMView();
+		
+		swix.getRootComponent().setVisible(true);
+	}
 
-    public Action random = new AbstractAction()
-    {
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            Random rand = new Random();
-            for(Integer i = 0; i < 300; i++)
-            {
-                mTree.insert(rand.nextInt() % 500);
-            }
-            zvtm.loadSvg(mTree.graph());
-        }
-    };
+	public Action random = new AbstractAction()
+	{
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			Random rand = new Random();
+			for(Integer i = 0; i < 300; i++)
+			{
+				mTree.insert(rand.nextInt() % 500);
+			}
+			zvtm.loadSvg(mTree.graph());
+		}
+	};
 
-    public Action submit = new AbstractAction()
-    {
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            String str = input.getText();
-            try
-            {
-                int tempInt = Integer.parseInt(str);
-                mTree.insert(tempInt);
-                zvtm.loadSvg(mTree.graph());
-                input.setText("");
-            } catch(NumberFormatException NFe)
-            {
-                input.setText("");
-            }
-        }
-    };
+	public Action submit = new AbstractAction()
+	{
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			String str = input.getText();
+			try
+			{
+				int tempInt = Integer.parseInt(str);
+				mTree.insert(tempInt);
+				zvtm.loadSvg(mTree.graph());
+				input.setText("");
+			} catch(NumberFormatException NFe)
+			{
+				input.setText("");
+			}
+		}
+	};
 }

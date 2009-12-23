@@ -31,91 +31,91 @@ import org.w3c.dom.Document;
  */
 public class ZVTMView
 {
-    VirtualSpaceManager vsm;
-    VirtualSpace vs;
-    ViewEventHandler eh;
+	VirtualSpaceManager vsm;
+	VirtualSpace vs;
+	ViewEventHandler eh;
 
-    View mainView;
-    Camera detailCamera;
+	View mainView;
+	Camera detailCamera;
 
-    CameraPortal overviewPortal;
-    Camera overviewCamera;
+	CameraPortal overviewPortal;
+	Camera overviewCamera;
 
-    short viewType = 0;
+	short viewType = 0;
 
-    String vts;
-    String spaceName = "mainSpace";
+	String vts;
+	String spaceName = "mainSpace";
 
-    ZVTMView()
-    {
-        vsm = VirtualSpaceManager.INSTANCE;
-        viewType = View.STD_VIEW;
+	ZVTMView()
+	{
+		vsm = VirtualSpaceManager.INSTANCE;
+		viewType = View.STD_VIEW;
 	vts = "View type: Standard";
 	switch(viewType)
-        {
-            case View.OPENGL_VIEW:
-            {
-                viewType = View.OPENGL_VIEW;
-                vts = "View type: OpenGL";
-                break;
-            }
+		{
+			case View.OPENGL_VIEW:
+			{
+				viewType = View.OPENGL_VIEW;
+				vts = "View type: OpenGL";
+				break;
+			}
 	}
-        init();
-    }
+		init();
+	}
 
-    public void init()
-    {
-        vs = vsm.addVirtualSpace(spaceName);
-        eh = new ZVTMEventHandler();
+	public void init()
+	{
+		vs = vsm.addVirtualSpace(spaceName);
+		eh = new ZVTMEventHandler();
 
-        //add camera to scene
-        Vector cameras = new Vector();
-        detailCamera = vs.addCamera();
-        detailCamera.setZoomFloor(-90);
-        cameras.add(detailCamera);
+		//add camera to scene
+		Vector cameras = new Vector();
+		detailCamera = vs.addCamera();
+		detailCamera.setZoomFloor(-90);
+		cameras.add(detailCamera);
 
-        vsm.addFrameView(cameras, spaceName, viewType, 800, 800, false, true);
-        mainView = vsm.getView(spaceName);
-        mainView.setBackgroundColor(Color.WHITE);
+		vsm.addFrameView(cameras, spaceName, viewType, 800, 800, false, true);
+		mainView = vsm.getView(spaceName);
+		mainView.setBackgroundColor(Color.WHITE);
 
-        JFrame frame = (JFrame)mainView.getFrame();
-        frame.setResizable(false);
+		JFrame frame = (JFrame)mainView.getFrame();
+		frame.setResizable(false);
 
-        mainView.setEventHandler(eh);
-        mainView.setNotifyMouseMoved(true);
+		mainView.setEventHandler(eh);
+		mainView.setNotifyMouseMoved(true);
 
-        overviewCamera = vs.addCamera();
-        overviewPortal = new CameraPortal(0, 0, 800, 100, overviewCamera);
-        vsm.addPortal(overviewPortal, mainView);
-    }
+		overviewCamera = vs.addCamera();
+		overviewPortal = new CameraPortal(0, 0, 800, 100, overviewCamera);
+		vsm.addPortal(overviewPortal, mainView);
+	}
 
-    public void loadSvg(File svg)
-    {
-        String parser = XMLResourceDescriptor.getXMLParserClassName();
-        SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
+	public void loadSvg(File svg)
+	{
+		String parser = XMLResourceDescriptor.getXMLParserClassName();
+		SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
 
-        FileInputStream fileInput;
-        Document doc;
+		FileInputStream fileInput;
+		Document doc;
 
-        try
-        {
-            fileInput = new FileInputStream(svg);
-            doc = f.createSVGDocument( "out.svg", fileInput );
-            SVGReader.load(doc, vs, false, "out.svg");
-            vsm.repaintNow(mainView);
+		try
+		{
+			fileInput = new FileInputStream(svg);
+			doc = f.createSVGDocument( "out.svg", fileInput );
+			SVGReader.load(doc, vs, false, "out.svg");
+			vsm.repaintNow(mainView);
 
-            // get farmost coords
-            long[] glyphCoords = new long[4];
-            glyphCoords = vs.findFarmostGlyphCoords();
+			// get farmost coords
+			long[] glyphCoords = new long[4];
+			glyphCoords = vs.findFarmostGlyphCoords();
 
-            // autocenter camera
-            mainView.centerOnRegion(detailCamera, 300, glyphCoords[0], glyphCoords[3], glyphCoords[2], glyphCoords[1]);
-            overviewPortal.getGlobalView(300);
-            
-        }
-        catch(Exception e)
-        {
-            System.out.println("Exception: " + e.getMessage());
-        }
-    }
+			// autocenter camera
+			mainView.centerOnRegion(detailCamera, 300, glyphCoords[0], glyphCoords[3], glyphCoords[2], glyphCoords[1]);
+			overviewPortal.getGlobalView(300);
+			
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception: " + e.getMessage());
+		}
+	}
 }
