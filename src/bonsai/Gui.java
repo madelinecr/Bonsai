@@ -38,6 +38,9 @@ public class Gui extends WindowAdapter
 
 	ZVTMView zvtm;
 
+	/**
+	 * Loads res/Gui.xml and starts rendering control panel.
+	 */
 	public void start() throws Exception
 	{
 		File guiFile = new File("res/Gui.xml");
