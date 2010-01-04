@@ -19,7 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
 /**
- *
+ * Event handler for main ZVTM render window
  * @author Blaine Pace <blainepace at gmail.com>
  */
 public class ZVTMEventHandler extends DefaultEventHandler
@@ -33,8 +33,11 @@ public class ZVTMEventHandler extends DefaultEventHandler
 
 	int lastJPX, lastJPY;
 
+	/**
+	 * Zooming callback for mouse wheel
+	 */
 	@Override
-	public void mouseWheelMoved(ViewPanel v,short wheelDirection,int jpx,int jpy, MouseWheelEvent e)
+	public void mouseWheelMoved(ViewPanel v, short wheelDirection, int jpx, int jpy, MouseWheelEvent e)
 	{
 		Camera c = VirtualSpaceManager.INSTANCE.getActiveCamera();
 		float a = (c.focal + Math.abs(c.altitude)) / c.focal;
@@ -50,6 +53,9 @@ public class ZVTMEventHandler extends DefaultEventHandler
 		}
 	}
 
+	/**
+	 * Callback for left click
+	 */
 	@Override
 	public void press1(ViewPanel v, int mod, int jpx, int jpy, MouseEvent e)
 	{
@@ -58,6 +64,9 @@ public class ZVTMEventHandler extends DefaultEventHandler
 		v.setDrawDrag(true);
 	}
 
+	/**
+	 * Callback for left release
+	 */
 	@Override
 	public void release1(ViewPanel v, int mod, int jpx, int jpy, MouseEvent e)
 	{
@@ -67,6 +76,9 @@ public class ZVTMEventHandler extends DefaultEventHandler
 		v.setDrawDrag(false);
 	}
 
+	/**
+	 * Callback for panning view
+	 */
 	@Override
 	public void mouseDragged(ViewPanel v, int mod, int buttonNumber, int jpx, int jpy, MouseEvent e)
 	{
@@ -84,10 +96,12 @@ public class ZVTMEventHandler extends DefaultEventHandler
 										 : (long) ((lastJPY-jpy)/(a*RBSSF)));
 
 			vsm.getAnimationManager().setZspeed(0);
-
 		}
 	}
 
+	/**
+	 * Empty callback to stop default enterGlyph behavior
+	 */
 	@Override
 	public void enterGlyph(Glyph g)
 	{

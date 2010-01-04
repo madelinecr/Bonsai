@@ -26,7 +26,7 @@ import org.apache.batik.util.XMLResourceDescriptor;
 import org.w3c.dom.Document;
 
 /**
- *
+ * Main render window
  * @author Blaine Pace <blainepace at gmail.com>
  */
 public class ZVTMView
@@ -46,12 +46,15 @@ public class ZVTMView
 	String vts;
 	String spaceName = "mainSpace";
 
+	/**
+	 * Calls init
+	 */
 	ZVTMView()
 	{
 		vsm = VirtualSpaceManager.INSTANCE;
 		viewType = View.STD_VIEW;
-	vts = "View type: Standard";
-	switch(viewType)
+		vts = "View type: Standard";
+		switch(viewType)
 		{
 			case View.OPENGL_VIEW:
 			{
@@ -59,10 +62,13 @@ public class ZVTMView
 				vts = "View type: OpenGL";
 				break;
 			}
-	}
+		}
 		init();
 	}
 
+	/**
+	 * Sets up and starts render window with portal
+	 */
 	public void init()
 	{
 		vs = vsm.addVirtualSpace(spaceName);
@@ -89,6 +95,10 @@ public class ZVTMView
 		vsm.addPortal(overviewPortal, mainView);
 	}
 
+	/**
+	 * Loads svg file from disk and renders it, autocentering
+	 * @param svg File object pointing to svg to load
+	 */
 	public void loadSvg(File svg)
 	{
 		String parser = XMLResourceDescriptor.getXMLParserClassName();
