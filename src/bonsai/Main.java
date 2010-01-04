@@ -14,20 +14,19 @@
 package info.bpace.bonsai;
 
 /**
- *
+ * Driver
  * @author Blaine Pace <blainepace at gmail.com>
  */
 public class Main
 {
 	/**
+	 * Driver
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) throws Exception
 	{
-		// TODO code application logic here
 		Gui mGui = new Gui();
 		mGui.start();
-
 	}
 
 }

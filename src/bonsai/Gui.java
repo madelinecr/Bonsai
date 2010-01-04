@@ -22,7 +22,7 @@ import org.swixml.*;
 import java.util.Random;
 
 /**
- *
+ * Gui class for small control panel.
  * @author Blaine Pace <blainepace at gmail.com>
  */
 public class Gui extends WindowAdapter
@@ -54,6 +54,9 @@ public class Gui extends WindowAdapter
 
 	public Action random = new AbstractAction()
 	{
+		/**
+		 * Inserts 300 random entries into tree.
+		 */
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
@@ -68,6 +71,10 @@ public class Gui extends WindowAdapter
 
 	public Action submit = new AbstractAction()
 	{
+		/**
+		 * Takes data from input textfield and inserts it
+		 * in tree
+		 */
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{

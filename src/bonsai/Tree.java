@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.FileWriter;
 
 /**
- *
+ * A B-tree of order 4.
  * @author Blaine Pace <blainepace at gmail.com>
  */
 public class Tree
@@ -56,11 +56,19 @@ public class Tree
 		}
 	}
 
+	/**
+	 * Search tree for data
+	 * @return boolean whether data is found
+	 */
 	public boolean search(Integer target)
 	{
 		return searchTree(target, root);
 	}
 
+	/**
+	 * Traverse in order function
+	 * @return string of all data entries
+	 */
 	public String traverse()
 	{
 		StringBuilder values = new StringBuilder();
@@ -68,6 +76,10 @@ public class Tree
 		return values.toString();
 	}
 
+	/**
+	 * Generates tree as svg and dumps it to disk
+	 * @return File object pointing to svg on disk
+	 */
 	public File graph()
 	{
 		GraphViz graph = new GraphViz();
