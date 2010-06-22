@@ -133,7 +133,6 @@ class Tree:
 		self.__traverseInOrder(tree.subTree, values)
 		
 		for x in range(tree.entryCount):
-			print(x)
 			values.append(tree.values[x].key)
 			self.__traverseInOrder(tree.values[x].subTree, values)
 		return
