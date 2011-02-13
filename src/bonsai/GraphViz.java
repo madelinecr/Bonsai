@@ -68,7 +68,7 @@ public class GraphViz
    /**
     * Where is your dot program located? It will be called externally.
     */
-   private static String DOT        = "res/dot";
+   private static String DOT        = "dot";
 
    /**
     * The source of the graph written in dot language.
