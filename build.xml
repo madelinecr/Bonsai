@@ -1,11 +1,11 @@
-<project name="bonsai" basedir="." default="main">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="bonsai" basedir="." default="main">
 
 	<property name="src.dir" value="src"/>
 	<property name="build.dir" value="build"/>
 	<property name="classes.dir" value="${build.dir}/classes"/>
 	<property name="jar.dir" value="${build.dir}/jar"/>
 	<property name="package.dir" value="${build.dir}/package"/>
-	<property name="bundle.dir" value="${build.dir}/bundle"/>
+  <!--<property name="bundle.dir" value="${build.dir}/bundle"/> -->
 	<property name="lib.dir" value="lib"/>
 	<property name="res.dir" value="res"/>
 
@@ -17,6 +17,11 @@
 
 <!-- Start targets -->
 
+  <target name="bootstrap" description="Used to install the ivy task jar">
+    <mkdir dir="${user.home}/.ant/lib"/>
+    <get dest="${user.home}/.ant/lib/ivy.jar" src="http://search.maven.org/remotecontent?filepath=org/apache/ivy/ivy/2.2.0/ivy-2.2.0.jar"/>
+  </target>
+  
 	<target name="clean">
 		<delete dir="${build.dir}"/>
 	</target>
@@ -65,13 +70,15 @@
 	</target>
 	
 	<target name="bundle" depends="package">
+    <!--
 		<mkdir dir="${bundle.dir}"/>
 		
-		<jarbundler dir="${bundle.dir}" name="${ant.project.name}" 
+    <jarbundler dir="${bundle.dir}" name="${ant.project.name}"
 		 mainclass="${main-class}" workingdirectory="$APP_PACKAGE/Contents/Resources">
 			<jarfileset dir="${package.dir}"/>
 			<resourcefileset dir="./" includes="res/*"/>
 		</jarbundler>
+    -->
 	</target>
 
 	<target name="run" depends="jar">
@@ -91,15 +98,16 @@
 	
 	<!-- =================================
 	target: resolve              
-	================================= -->
-	<target name="resolve" description="--> retrieve dependencies with ivy">
-		<ivy-retrieve />
-	</target>
+  ================================= -->
+  <target name="resolve" description="--> retrieve dependencies with ivy">
+    <ivy:retrieve />
+  </target>
 	
-	<taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler"/>
+  <!--<taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler"/>
 	<taskdef name="ivy-configure" classname="org.apache.ivy.ant.IvyConfigure"/>
   <taskdef name="ivy-resolve" classname="org.apache.ivy.ant.IvyResolve"/>
   <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
   <taskdef name="ivy-publish" classname="org.apache.ivy.ant.IvyPublish"/>
+  -->
 
 </project>
