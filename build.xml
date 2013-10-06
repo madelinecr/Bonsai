@@ -40,7 +40,17 @@
 		</jar>
 	</target>
 
-	<target name="package-libs" depends="compile">
+
+	<target name="run" depends="jar">
+		<java fork="true" classname="${main-class}">
+			<classpath>
+				<path refid="classpath"/>
+				<path location="${jar.dir}/${ant.project.name}.jar"/>
+			</classpath>
+		</java>
+	</target>
+
+    <target name="package-libs" depends="compile">
 		<mkdir dir="${package.dir}"/>
 		<jar destfile="${package.dir}/${ant.project.name}-libs.jar" basedir="${classes.dir}">
 			<manifest>
@@ -68,27 +78,7 @@
 			<fileset dir="${res.dir}"/>
 		</copy>
 	</target>
-	
-	<target name="bundle" depends="package">
-    <!--
-		<mkdir dir="${bundle.dir}"/>
-		
-    <jarbundler dir="${bundle.dir}" name="${ant.project.name}"
-		 mainclass="${main-class}" workingdirectory="$APP_PACKAGE/Contents/Resources">
-			<jarfileset dir="${package.dir}"/>
-			<resourcefileset dir="./" includes="res/*"/>
-		</jarbundler>
-    -->
-	</target>
 
-	<target name="run" depends="jar">
-		<java fork="true" classname="${main-class}">
-			<classpath>
-				<path refid="classpath"/>
-				<path location="${jar.dir}/${ant.project.name}.jar"/>
-			</classpath>
-		</java>
-	</target>
 
 	<target name="clean-build" depends="clean,jar"/>
 	
@@ -102,12 +92,5 @@
   <target name="resolve" description="--> retrieve dependencies with ivy">
     <ivy:retrieve />
   </target>
-	
-  <!--<taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler"/>
-	<taskdef name="ivy-configure" classname="org.apache.ivy.ant.IvyConfigure"/>
-  <taskdef name="ivy-resolve" classname="org.apache.ivy.ant.IvyResolve"/>
-  <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
-  <taskdef name="ivy-publish" classname="org.apache.ivy.ant.IvyPublish"/>
-  -->
 
 </project>
